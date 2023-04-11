@@ -9,15 +9,17 @@ import java.util.Collections;
 
 /******************************************************************************************
  *
- * tab2stardict - converting file from tab to stardict format version=2.4.2  in Java
+ * tab2stardict - converting file from tab to stardict format version 2.4.2  in Java
  *
- * Author: Szczepan Panek    sz.panek.sanok@gmail.com
- * Last update: 13.03.2023
+ * Author: Szczepan Panek
+ * e-mail: sz.panek.sanok@gmail.com
+ * ver: 1.02
+ * last update: 11.04.2023
  *
  ******************************************************************************************/
 
 public class tab2stardict {
-    public static void convert(File from) throws IOException {
+    public static void convert(File from) {
 
         try {
             String dictName = JOptionPane.showInputDialog("enter the name of the dictionary");
@@ -53,11 +55,8 @@ public class tab2stardict {
                 sizes.add((int) parts[1]. getBytes(). length);
             }
 
-
             br.close();
             dictWriter.close();
-
-
 
             for (int i = 0; i < words.size(); i++) {
                 byte[] offsetsBytes = ByteBuffer.allocate(4).putInt(offsets.get(i)).array();
@@ -81,7 +80,6 @@ public class tab2stardict {
 
             Toolkit.getDefaultToolkit().beep();
             JOptionPane.showMessageDialog(null, "done, conversion complete!\n files *.dict *.idx *.info\n have been created");
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,29 +90,25 @@ public class tab2stardict {
             File in = new File(args[0]);
 
             convert(in);
-
             System.exit(0);
         }
 
         if (args.length == 0) {
             JOptionPane.showMessageDialog(null, "converting from tab to stardict format.\n" +
-                    "autor: Szczepan Panek\n2023 r.");
+                    "author: Szczepan Panek\n2023 r.");
 
             JFileChooser chooser = new JFileChooser();
-            chooser.setDialogTitle("Wybierz plik.");
+            chooser.setDialogTitle("choose a file");
 
             int result = chooser.showOpenDialog(null);
             if (result != JFileChooser.APPROVE_OPTION) {
                 return;
             }
-            File in = chooser.getSelectedFile();             //
-            //      result = chooser.showSaveDialog(null);
+            File in = chooser.getSelectedFile();
+
             if (result != JFileChooser.APPROVE_OPTION) {
                 return;
             }
-            String dir = "" + chooser.getSelectedFile();
-
-            File out = new File(dir + "-out");
             convert(in);
 
         }
